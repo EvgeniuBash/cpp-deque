@@ -1,4 +1,5 @@
 #include "calculator.h"
+#include <iostream>
 
 bool ReadNumber(Number& result) { 
 if (!(std::cin >> result)) {
@@ -6,9 +7,9 @@ if (!(std::cin >> result)) {
     std::cin.clear();
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); 
         return false;
-} 
+    } 
         return true; 
- }
+    }
 
 
 bool RunCalculatorCycle() {
@@ -74,4 +75,4 @@ if (!ReadNumber(result)) {
             }
     }
 return false;
-    }
+}
