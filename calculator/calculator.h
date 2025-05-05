@@ -1,9 +1,6 @@
 #pragma once
 
 #include <string>
-#include <cmath>
-#include <limits>
-#include <sstream>
 
 using Number = double;
 
