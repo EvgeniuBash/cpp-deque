@@ -1,11 +1,12 @@
 #pragma once
 
 #include "calculator.h"
+
 #include <QMainWindow>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
-class MainWindow;
+    class MainWindow;
 }
 QT_END_NAMESPACE
 
@@ -15,6 +16,8 @@ class MainWindow : public QMainWindow {
 public:
     MainWindow(QWidget* parent = nullptr);
     ~MainWindow();
+
+    void changeOperation(Operation new_operation, const QString& new_symbol);
 
 
 
@@ -71,7 +74,9 @@ private:
     double active_number_;
     double memory_cell_;
     bool memory_saved_;
-    Operation current_operation_ =  Operation::NO_OPERATION;
+    Operation current_operation_ = Operation::NO_OPERATION;
     Ui::MainWindow* ui;
     QString numb;
+    bool isResultDisplayed = false;
+    bool isMemoryNumberDisplayed = false;
 };

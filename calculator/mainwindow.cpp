@@ -2,8 +2,6 @@
 #include "ui_mainwindow.h"
 
 
-#include <QDebug>
-
 MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent), ui(new Ui::MainWindow) {
     ui->setupUi(this);
@@ -25,6 +23,9 @@ void MainWindow::on_pb_one_clicked()
     input_number_ = input_number_ + "1";
     active_number_ = input_number_.toDouble();
     ui->l_result->setText(input_number_);
+
+    isResultDisplayed = false;
+    isMemoryNumberDisplayed = false;
 }
 
 
@@ -33,6 +34,9 @@ void MainWindow::on_pb_two_clicked()
     input_number_ = input_number_ + "2";
     active_number_ = input_number_.toDouble();
     ui->l_result->setText(input_number_);
+
+    isResultDisplayed = false;
+    isMemoryNumberDisplayed = false;
 }
 
 
@@ -41,6 +45,9 @@ void MainWindow::on_pb_zero_clicked()
     input_number_ = input_number_ + "0";
     active_number_ = input_number_.toDouble();
     ui->l_result->setText(input_number_);
+
+    isResultDisplayed = false;
+    isMemoryNumberDisplayed = false;
 }
 
 
@@ -49,6 +56,9 @@ void MainWindow::on_pb_three_clicked()
     input_number_ = input_number_ + "3";
     active_number_ = input_number_.toDouble();
     ui->l_result->setText(input_number_);
+
+    isResultDisplayed = false;
+    isMemoryNumberDisplayed = false;
 }
 
 
@@ -57,6 +67,9 @@ void MainWindow::on_pb_four_clicked()
     input_number_ = input_number_ + "4";
     active_number_ = input_number_.toDouble();
     ui->l_result->setText(input_number_);
+
+    isResultDisplayed = false;
+    isMemoryNumberDisplayed = false;
 }
 
 
@@ -65,6 +78,9 @@ void MainWindow::on_pb_five_clicked()
     input_number_ = input_number_ + "5";
     active_number_ = input_number_.toDouble();
     ui->l_result->setText(input_number_);
+
+    isResultDisplayed = false;
+    isMemoryNumberDisplayed = false;
 }
 
 
@@ -73,6 +89,9 @@ void MainWindow::on_pb_six_clicked()
     input_number_ = input_number_ + "6";
     active_number_ = input_number_.toDouble();
     ui->l_result->setText(input_number_);
+
+    isResultDisplayed = false;
+    isMemoryNumberDisplayed = false;
 }
 
 
@@ -81,6 +100,9 @@ void MainWindow::on_pb_seven_clicked()
     input_number_ = input_number_ + "7";
     active_number_ = input_number_.toDouble();
     ui->l_result->setText(input_number_);
+
+    isResultDisplayed = false;
+    isMemoryNumberDisplayed = false;
 }
 
 
@@ -89,6 +111,9 @@ void MainWindow::on_pb_eight_clicked()
     input_number_ = input_number_ + "8";
     active_number_ = input_number_.toDouble();
     ui->l_result->setText(input_number_);
+
+    isResultDisplayed = false;
+    isMemoryNumberDisplayed = false;
 }
 
 
@@ -97,11 +122,17 @@ void MainWindow::on_pb_nine_clicked()
     input_number_ = input_number_ + "9";
     active_number_ = input_number_.toDouble();
     ui->l_result->setText(input_number_);
+
+    isResultDisplayed = false;
+    isMemoryNumberDisplayed = false;
 }
 
 
 void MainWindow::on_pb_backspace_clicked()
 {
+    if (isResultDisplayed || isMemoryNumberDisplayed) {
+        return;
+    }
     input_number_.chop(1);
     active_number_ = input_number_.toDouble();
     ui->l_result->setText(input_number_);
@@ -113,9 +144,25 @@ void MainWindow::on_pb_backspace_clicked()
 
 void MainWindow::on_pb_point_clicked()
 {
+    if (isResultDisplayed || isMemoryNumberDisplayed) {
+        input_number_ = "0.";
+        active_number_ = input_number_.toDouble();
+        ui->l_result->setText(input_number_);
+
+        isResultDisplayed = false;
+        isMemoryNumberDisplayed = false;
+        return;
+    }
+    if (input_number_.contains('.')) {
+        return;
+    }
+
     input_number_ = input_number_ + ".";
     active_number_ = input_number_.toDouble();
     ui->l_result->setText(input_number_);
+
+    isResultDisplayed = false;
+    isMemoryNumberDisplayed = false;
 }
 
 
@@ -150,9 +197,12 @@ void MainWindow::on_pb_save_memory_clicked()
 void MainWindow::on_pb_load_memory_clicked()
 {
     if(memory_saved_) {
-       QString num = QString::number(memory_cell_);
+        QString num = QString::number(memory_cell_);
         active_number_ = memory_cell_;
         ui->l_result->setText(num);
+
+        isMemoryNumberDisplayed = true;
+        isResultDisplayed = false;
     }
 }
 
@@ -167,15 +217,7 @@ void MainWindow::on_pb_clear_memory_clicked()
 
 void MainWindow::on_pb_exponentiation_clicked()
 {
-    if (current_operation_ == Operation::NO_OPERATION) {
-        active_number_ = calculator_.GetNumber();
-        calculator_.Set(active_number_);
-    }
-    current_operation_ = Operation::POWER;
-    numb = ui->l_result->text();
-    ui->l_formula->setText(numb + " ^");
-    ui->l_result->setText(numb);
-    input_number_.clear();
+    changeOperation(Operation::POWER, "^");
 }
 
 
@@ -197,7 +239,7 @@ void MainWindow::on_pb_result_clicked()
     }
 
     ui->l_formula->setText(QString::number(calculator_.GetNumber()) + " " + operation_symbol + " " + QString::number(active_number_) + " =");
-    
+
     switch (current_operation_) {
     case Operation::ADDITION:
         calculator_.Add(active_number_);
@@ -223,62 +265,32 @@ void MainWindow::on_pb_result_clicked()
     active_number_ = calculator_.GetNumber();
     ui->l_result->setText(QString::number(active_number_));
     input_number_.clear();
+    isResultDisplayed = true;
+    isMemoryNumberDisplayed = false;
 }
 
 
 void MainWindow::on_pb_division_clicked()
 {
-    if (current_operation_ == Operation::NO_OPERATION) {
-        active_number_ = calculator_.GetNumber();
-        calculator_.Set(active_number_);
-    }
-    current_operation_ = Operation::DIVISION;
-    numb = ui->l_result->text();
-    ui->l_formula->setText(numb + " ÷");
-    ui->l_result->setText(numb);
-    input_number_.clear();
+    changeOperation(Operation::DIVISION, "÷");
 }
 
 
 void MainWindow::on_pb_multiply_clicked()
 {
-    if (current_operation_ == Operation::NO_OPERATION) {
-        active_number_ = calculator_.GetNumber();
-        calculator_.Set(active_number_);
-    }
-    current_operation_ = Operation::MULTIPLICATION;
-    numb = ui->l_result->text();
-    ui->l_formula->setText(numb + " ×");
-    ui->l_result->setText(numb);
-    input_number_.clear();
+   changeOperation(Operation::MULTIPLICATION, "×");
 }
 
 
 void MainWindow::on_pb_minus_clicked()
 {
-    if (current_operation_ == Operation::NO_OPERATION) {
-        active_number_ = calculator_.GetNumber();
-        calculator_.Set(active_number_);
-    }
-    current_operation_ = Operation::SUBTRACTION;
-    numb = ui->l_result->text();
-    ui->l_formula->setText(numb + " -");
-    ui->l_result->setText(numb);
-    input_number_.clear();
+    changeOperation(Operation::SUBTRACTION, "−");
 }
 
 
 void MainWindow::on_pb_plus_clicked()
 {
-    if (current_operation_ == Operation::NO_OPERATION) {
-        active_number_ = calculator_.GetNumber();
-        calculator_.Set(active_number_);
-    }
-    current_operation_ = Operation::ADDITION;
-    numb = ui->l_result->text();
-    ui->l_formula->setText(numb + " +");
-    ui->l_result->setText(numb);
-    input_number_.clear();
+    changeOperation(Operation::ADDITION, "+");
 }
 
 
@@ -288,4 +300,30 @@ void MainWindow::on_pb_clear_clicked()
     ui->l_result->setText("0");
     input_number_.clear();
     active_number_ = 0;
+}
+
+void MainWindow::changeOperation(Operation new_operation, const QString &new_symbol) {
+    if (!ui->l_formula->text().isEmpty()) {
+        QString formula = ui->l_formula->text();
+        QChar lastChar = formula[formula.length() - 1];
+        QString operationSymbols = "+−×÷^";
+
+        if (operationSymbols.contains(lastChar)) {
+            formula.chop(1);
+            formula.append(new_symbol);
+            ui->l_formula->setText(formula);
+            current_operation_ = new_operation;
+            return;
+        }
+    }
+
+    if (current_operation_ == Operation::NO_OPERATION) {
+        active_number_ = calculator_.GetNumber();
+        calculator_.Set(active_number_);
+    }
+    current_operation_ = new_operation;
+    numb = ui->l_result->text();
+    ui->l_formula->setText(numb + " " + new_symbol);
+    ui->l_result->setText(numb);
+    input_number_.clear();
 }
