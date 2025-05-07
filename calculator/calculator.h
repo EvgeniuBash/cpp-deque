@@ -1,51 +1,104 @@
+
 #pragma once
 
 #include <string>
+#include <optional>
 #include <cmath>
-#include <limits>
+#include "rational.h"
+#include "pow.h"
 
-enum class Operation {
-    NO_OPERATION,          //операция не задана
-    ADDITION,              //плюс
-    SUBTRACTION,           //минус
-    MULTIPLICATION,        //умножить
-    DIVISION,              //поделить
-    POWER                  //возведение в степень
-};
+using Error = std::string;
 
-
-using Number = double;
-
+template <typename Number>
 class Calculator {
 public:
 
-    void Set(Number n);
+    void Load() {
+        if (mem_) {
+            result = *mem_;
+        } else {
+            result = Number();
+        }
+    }
 
-    Number GetNumber() const;
+    void Save() {
+        mem_ = result;
+    }
 
-    void Add(Number n);
+    bool GetHasMem() const {
+        return mem_.has_value();
+    }
 
-    void Sub(Number n);
+    void Set(const Number& n) {
+        result = n;
+    }
 
-    void Div(Number n);
-
-    void Mul(Number n);
-
-    void Pow(Number n);
-
-    void Save();
-
-    void Load();
-
-    bool HasMem() const;
-
-    std::string GetNumberRepr() const;
-
-
+    Number GetNumber() const {
+        return result;
+    }
+    // Сложение
+    std::optional<Error> Add(const Number& n) {
+        result += n;
+        return std::nullopt;
+    }
+    // Вычитание
+    std::optional<Error> Sub(const Number& n) {
+        result -= n;;
+        return std::nullopt;
+    }
+    // Деление
+    std::optional<Error> Div(const Number& n) {
+        if constexpr (std::is_floating_point_v<Number>) {
+            if (n == 0.0) {
+                result = (result > 0) ? std::numeric_limits<Number>::infinity() : std::numeric_limits<Number>::infinity() * -1;
+                return std::nullopt; 
+            }
+        } else {
+            if (n == 0) {
+                return "Division by zero"; 
+            }
+        }
+        result /= n; 
+        return std::nullopt; 
+    }
+    // Умножение
+    std::optional<Error> Mul(const Number& n) {
+        result *= n;
+        return std::nullopt;
+    }
+    // Возведение в степень
+    std::optional<Error> Pow(const Number& n) {
+        if constexpr (std::is_integral_v<Number>) {
+            if (result == 0 && n == 0) {
+                return "Zero power to zero";
+            }
+            if (n < 0) {
+                return "Integer negative power";
+            }
+            result = IntegerPow(result, n);
+            return std::nullopt;
+        }
+        else if constexpr (std::is_same_v<Number, Rational>) {
+            if (result.GetNumerator() == 0 && result.GetDenominator() == 1 && n.GetNumerator() == 0 && n.GetDenominator() == 1) {
+                return "Zero power to zero";
+            }
+            if (n.GetDenominator() != 1) {
+                return "Fractional power is not supported";
+            }
+            result = ::Pow(result, n);
+            return std::nullopt;
+        }
+        else if constexpr (std::is_floating_point_v<Number>) {
+            result = std::pow(result, n);
+            return std::nullopt;
+        }
+        else {
+            return "Unsupported type for power operation";
+        }
+    }
 
 private:
-    Number save_value_ = 0.0;
-    bool is_save_memory_empty_ = true;
-    Number result_ = 0.0;
+    Number result;
+    std::optional<Number> mem_ = std::nullopt;
 
 };

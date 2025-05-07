@@ -173,7 +173,7 @@
        </widget>
       </item>
       <item row="5" column="0" alignment="Qt::AlignHCenter">
-       <widget class="QPushButton" name="pb_point">
+       <widget class="QPushButton" name="tb_extra">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
           <horstretch>0</horstretch>
@@ -223,7 +223,7 @@
        </widget>
       </item>
       <item row="4" column="0" alignment="Qt::AlignHCenter">
-       <widget class="QPushButton" name="pb_one">
+       <widget class="QPushButton" name="pb_1">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
           <horstretch>0</horstretch>
@@ -248,7 +248,7 @@
        </widget>
       </item>
       <item row="3" column="1" alignment="Qt::AlignHCenter">
-       <widget class="QPushButton" name="pb_five">
+       <widget class="QPushButton" name="pb_5">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
           <horstretch>0</horstretch>
@@ -355,7 +355,7 @@
        </widget>
       </item>
       <item row="4" column="1" alignment="Qt::AlignHCenter">
-       <widget class="QPushButton" name="pb_two">
+       <widget class="QPushButton" name="pb_2">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
           <horstretch>0</horstretch>
@@ -380,7 +380,7 @@
        </widget>
       </item>
       <item row="3" column="0" alignment="Qt::AlignHCenter">
-       <widget class="QPushButton" name="pb_four">
+       <widget class="QPushButton" name="pb_4">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
           <horstretch>0</horstretch>
@@ -405,7 +405,7 @@
        </widget>
       </item>
       <item row="3" column="2" alignment="Qt::AlignHCenter">
-       <widget class="QPushButton" name="pb_six">
+       <widget class="QPushButton" name="pb_6">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
           <horstretch>0</horstretch>
@@ -449,7 +449,7 @@
        </widget>
       </item>
       <item row="2" column="0" alignment="Qt::AlignHCenter">
-       <widget class="QPushButton" name="pb_seven">
+       <widget class="QPushButton" name="pb_7">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
           <horstretch>0</horstretch>
@@ -499,7 +499,7 @@
        </widget>
       </item>
       <item row="2" column="2" alignment="Qt::AlignHCenter">
-       <widget class="QPushButton" name="pb_nine">
+       <widget class="QPushButton" name="pb_9">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
           <horstretch>0</horstretch>
@@ -524,7 +524,7 @@
        </widget>
       </item>
       <item row="5" column="1" alignment="Qt::AlignHCenter">
-       <widget class="QPushButton" name="pb_zero">
+       <widget class="QPushButton" name="pb_0">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
           <horstretch>0</horstretch>
@@ -574,7 +574,7 @@
        </widget>
       </item>
       <item row="4" column="2" alignment="Qt::AlignHCenter">
-       <widget class="QPushButton" name="pb_three">
+       <widget class="QPushButton" name="pb_3">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
           <horstretch>0</horstretch>
@@ -599,7 +599,7 @@
        </widget>
       </item>
       <item row="2" column="1" alignment="Qt::AlignHCenter">
-       <widget class="QPushButton" name="pb_eight">
+       <widget class="QPushButton" name="pb_8">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
           <horstretch>0</horstretch>
@@ -718,6 +718,45 @@
        </size>
       </property>
      </spacer>
+    </item>
+    <item row="0" column="0" colspan="2">
+     <widget class="QComboBox" name="cmb_controller">
+      <item>
+       <property name="text">
+        <string>double</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>float</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>uint8_t</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>int</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>int64_t</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>size_t</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Rational</string>
+       </property>
+      </item>
+     </widget>
     </item>
    </layout>
   </widget>
