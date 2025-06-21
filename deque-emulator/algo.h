@@ -15,27 +15,30 @@ public:
 template<class T, class Comp>
 std::deque<T> Merge(const std::deque<T>& half1, const std::deque<T>& half2, const Comp& comparator) {
     std::deque<T> half;
-    size_t f1 = 0, f2 = 0;
+    auto leftIterator = half1.begin();
+    auto rightIterator = half2.begin();
 
-    while(f1 < half1.size() && f2 < half2.size()) {
-        if (comparator(half1[f1], half2[f2])) {
-            half.push_back(half1[f1]);
-            ++f1;
+    while(leftIterator < half1.end() && rightIterator < half2.end()) {
+        if (comparator(*leftIterator, *rightIterator)) {
+            half.push_back(*leftIterator);
+            ++leftIterator;
         } else {
-            half.push_back(half2[f2]);
-            ++f2;
+            half.push_back(*rightIterator);
+            ++rightIterator;
         }
     }
 
-    while (f1 < half1.size()) {
-        half.push_back(half1[f1]);
-        ++f1;
+    while (leftIterator != half1.end()) {
+        half.push_back(*leftIterator);
+        ++leftIterator;
     }
 
-    while (f2 < half2.size()) {
-        half.push_back(half2[f2]);
-        ++f2;
+    while (rightIterator != half2.end()) {
+        half.push_back(*rightIterator);
+        ++rightIterator;
     }
+    std::copy(leftIterator, half1.end(), std::back_inserter(half));
+    std::copy(rightIterator, half2.end(), std::back_inserter(half));
     return half;
 }
 

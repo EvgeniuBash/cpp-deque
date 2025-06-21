@@ -203,9 +203,13 @@ void MainWindow::on_btn_end_clicked()
 void MainWindow::on_pb_resize_clicked()
 {
     QString sizeText = ui->txt_size->text();
-    int S = sizeText.toInt();
-    model.items.resize(S);
-    ApplyModel();
+    const int max_size = 1000;
+    bool ok;
+    int size = sizeText.toInt(&ok);
+    if (ok && size >= 0 && size <= max_size) {
+        model.items.resize(size);
+        ApplyModel();
+    }
 }
 
 
@@ -262,8 +266,7 @@ void MainWindow::SetRandomGen(const std::mt19937& random_gen) {
 
 void MainWindow::on_pb_sort_clicked()
 {
-    Comp comparator;
-    model.items = MergeSort(model.items, comparator);
+    std::sort(model.items.begin(), model.items.end(),   std::less<>());
     model.iterator = model.items.begin();
     ApplyModel();
 }
